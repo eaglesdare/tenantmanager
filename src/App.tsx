@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import kaiLogo from './assets/kai.png';
+import {useState} from "react";
+import {useList} from "@uidotdev/usehooks";
+import RoomsPage from "./component/roomsPage/RoomsPage.tsx";
+import {Tenant} from "./model/Tenant.ts";
+import {Room} from "./model/Room.ts";
+import TenantsPage from "./component/tenantsPage/TenantsPage.tsx";
+
+enum Tab {
+    TENANTS,
+    ROOMS,
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [currentTab, setCurrentTab] = useState(Tab.TENANTS);
+    const [rooms, { push: addRoom, removeAt: removeRoomAt }] = useList([] as Room[]);
+    const [tenants, { push: addTenant, removeAt: removeTenantAt }] = useList([] as Tenant[]);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    function renderContent() {
+        switch (currentTab) {
+            case Tab.ROOMS:
+                return <RoomsPage rooms={rooms} addRoom={addRoom} removeRoomAt={removeRoomAt} tenants={tenants}></RoomsPage>
+            case Tab.TENANTS:
+                return <TenantsPage rooms={rooms} addTenant={addTenant} removeTenantAt={removeTenantAt} tenants={tenants}></TenantsPage>
+        }
+    }
+
+    return (
+        <>
+            <div className="headerBlock">
+                <img src={kaiLogo} width={200}></img>
+                <h1>Управління Гуртожитком №3 УЖС КАІ</h1>
+                <button onClick={() => setCurrentTab(Tab.TENANTS)} disabled={currentTab === Tab.TENANTS}
+                        className={`tabButton ${currentTab === Tab.TENANTS ? "tabButtonActive" : ""}`}>Мешканці
+                </button>
+                <button onClick={() => setCurrentTab(Tab.ROOMS)} disabled={currentTab === Tab.ROOMS}
+                        className={`tabButton ${currentTab === Tab.ROOMS ? "tabButtonActive" : ""}`}>Кімнати
+                </button>
+            </div>
+            <div className="contentBlock">
+                {renderContent()}
+            </div>
+        </>
+    )
 }
+
 
 export default App

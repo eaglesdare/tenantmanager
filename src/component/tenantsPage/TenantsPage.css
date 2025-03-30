@@ -1,0 +1,13 @@
+.tenantsTable {
+    border-collapse: collapse;
+    border: black thin solid;
+}
+
+.tenantsTable td, .tenantsTable th {
+    border: black thin solid;
+    padding: 5px;
+}
+
+.tenantsTable tr:nth-child(even), .tenantsTable thead {
+    background-color: aliceblue;
+}

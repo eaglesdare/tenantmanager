@@ -1,0 +1,14 @@
+.roomsTable {
+    border-collapse: collapse;
+    border: black thin solid;
+    margin-bottom: 1em;
+}
+
+.roomsTable td, .roomsTable th {
+    border: black thin solid;
+    padding: 5px;
+}
+
+.roomsTable tr:nth-child(even), .roomsTable thead {
+    background-color: aliceblue;
+}
